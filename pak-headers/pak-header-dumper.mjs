@@ -1,5 +1,5 @@
 import {open} from 'yauzl';
-import {promises as fs} from 'fs';
+import {promises as fs, existsSync} from 'fs';
 
 export async function dumpPakHeaders(pakFilePaths, outPath) {
     let textures = [];
@@ -13,7 +13,9 @@ export async function dumpPakHeaders(pakFilePaths, outPath) {
         materials = materials.concat(entries.materials);
     }
 
-    await fs.mkdir(outPath + '/header-entries');
+    if (!existsSync(outPath + '/header-entries')) {
+        await fs.mkdir(outPath + '/header-entries');
+    }
 
     await fs.writeFile(outPath + '/header-entries/textures.json', JSON.stringify(toMapAndRemoveRedundantTextures(textures)));
     await fs.writeFile(outPath + '/header-entries/models.json', JSON.stringify(toMap(models)));
