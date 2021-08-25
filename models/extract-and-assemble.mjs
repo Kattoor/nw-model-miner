@@ -94,7 +94,7 @@ export async function extractAndAssemble(path) {
 
     await extractModelsMaterialsTextures(records, path);
 
-    await convertModels(records);
+    await convertModels(records, path);
 
     const filesToDelete = await globby(path + '**/!(*.gltf)', {expandDirectories: true});
     for (let fileToDelete of filesToDelete) {
