@@ -7,9 +7,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pool = workerpool.pool(__dirname + '/converter-worker.js', {workerType: 'process'});
 
 export async function convertModels(records, outPath) {
-    const colladaFilePaths = await convertToColladaFiles(records, outPath);
+    const colladaFilePaths = await convertToColladaFiles(records, outPath + 'gltf/');
     await fixColladaFiles(colladaFilePaths);
-    await convertToGltfFiles(colladaFilePaths, outPath + '/gltf/');
+    await convertToGltfFiles(colladaFilePaths, outPath + 'gltf/');
     await pool.terminate();
 }
 
