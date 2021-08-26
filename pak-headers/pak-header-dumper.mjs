@@ -2,6 +2,10 @@ import {open} from 'yauzl';
 import {promises as fs, existsSync} from 'fs';
 
 export async function dumpPakHeaders(pakFilePaths, outPath) {
+    const start = Date.now();
+
+    process.stdout.write('Dumping headers..\r');
+
     let textures = [];
     let models = [];
     let materials = [];
@@ -20,6 +24,8 @@ export async function dumpPakHeaders(pakFilePaths, outPath) {
     await fs.writeFile(outPath + '/header-entries/textures.json', JSON.stringify(toMapAndRemoveRedundantTextures(textures)));
     await fs.writeFile(outPath + '/header-entries/models.json', JSON.stringify(toMap(models)));
     await fs.writeFile(outPath + '/header-entries/materials.json', JSON.stringify(toMap(materials)));
+
+    console.log('Dumping headers.. finished in ' + (Date.now() - start) + 'ms');
 }
 
 function getHeaders(pakFilePath) {
