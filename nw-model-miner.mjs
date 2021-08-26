@@ -31,7 +31,9 @@ await extractAndAssembleModels(outPath);
 
 /* Remove empty folders */
 const dirs = await fs.readdir(outPath, {withFileTypes: true});
-dirs.forEach(dir => removeIfEmpty(outPath, dir));
+for (let dir of dirs) {
+    await removeIfEmpty(outPath, dir);
+}
 
 async function removeIfEmpty(pathPrefix, path) {
     if (!path.isDirectory()) {
@@ -45,7 +47,11 @@ async function removeIfEmpty(pathPrefix, path) {
         return true;
     }
 
-    const subDirsAreEmpty = dirsAndFiles.map(dir => removeIfEmpty(pathPrefix + '/' + path.name, dir)).every(isEmpty => isEmpty === true);
+    const removeIfEmptyResults = [];
+    for (let dirOrFile of dirsAndFiles) {
+        removeIfEmptyResults.push(await removeIfEmpty(pathPrefix + '/' + path.name, dirOrFile));
+    }
+    const subDirsAreEmpty = removeIfEmptyResults.every(isEmpty => isEmpty === true);
     if (subDirsAreEmpty) {
         await fs.rmdir(pathPrefix + '/' + path.name);
         return true;
