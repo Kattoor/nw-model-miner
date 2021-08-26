@@ -93,13 +93,13 @@ async function extractTextureFromPak(textureHeader, savePath) {
     /* to png */
     await convertDds(savePath);
 
-    /*/!* shrink *!/
+    /* shrink */
     const pngPath = savePath.slice(0, -3) + 'png';
     const pngFile = await fs.readFile(pngPath);
     const {width, height} = await sharp(pngFile).metadata();
-    const w = Math.round(width / 8);
-    const h = Math.round(height / 8);
-    await fs.writeFile(pngPath, await sharp(pngFile).resize(w, h).toBuffer());*/
+    const w = Math.round(width / 2);
+    const h = Math.round(height / 2);
+    await fs.writeFile(pngPath, await sharp(pngFile).resize(w, h).toBuffer());
 }
 
 async function convertDds(path) {
