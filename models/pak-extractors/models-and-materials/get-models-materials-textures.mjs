@@ -8,16 +8,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pool = workerpool.pool(__dirname + '/extract-worker.js', {workerType: 'process'});
 
 export async function extractModelsMaterialsTextures(records, outPath) {
-    const modelHeaders = JSON.parse(await fs.readFile(outPath + '/header-entries/models.json', 'utf-8'));
-    const materialHeaders = JSON.parse(await fs.readFile(outPath + '/header-entries/materials.json', 'utf-8'));
-    const textureHeaders = JSON.parse(await fs.readFile(outPath + '/header-entries/textures.json', 'utf-8'));
+    const modelHeaders = JSON.parse(await fs.readFile(outPath + 'header-entries/models.json', 'utf-8'));
+    const materialHeaders = JSON.parse(await fs.readFile(outPath + 'header-entries/materials.json', 'utf-8'));
+    const textureHeaders = JSON.parse(await fs.readFile(outPath + 'header-entries/textures.json', 'utf-8'));
 
-    await extractModelsAndMaterials(records, modelHeaders, materialHeaders, outPath + '/gltf/');
-    await extractNecessaryTextures(records, textureHeaders, outPath + '/gltf/');
+    await extractModelsAndMaterials(records, modelHeaders, materialHeaders, outPath + 'gltf/');
+    await extractNecessaryTextures(records, textureHeaders, outPath + 'gltf/');
 
-    await fs.unlink(outPath + '/header-entries/models.json');
-    await fs.unlink(outPath + '/header-entries/materials.json');
-    await fs.unlink(outPath + '/header-entries/textures.json');
+    await fs.unlink(outPath + 'header-entries/models.json');
+    await fs.unlink(outPath + 'header-entries/materials.json');
+    await fs.unlink(outPath + 'header-entries/textures.json');
 
     await pool.terminate();
 }
@@ -48,7 +48,7 @@ async function extractModelsAndMaterials(records, modelHeaders, materialHeaders,
                 skin2Material !== '' ? materialHeaders[skin2Material] : null,
                 skin2Model
             ])
-                .then(() => {
+                .always(() => {
                     finishedTasks += 1;
                     process.stdout.write('Extracting models and materials.. ' + Math.round(finishedTasks * 100 / records.length) + '%\r');
                     if (finishedTasks === records.length) {
@@ -88,7 +88,7 @@ async function extractNecessaryTextures(records, textureHeaders, outPath) {
                 textureHeader,
                 requiredTextureFile
             ])
-                .then(() => {
+                .always(() => {
                     finishedTasks += 1;
                     process.stdout.write('Extracting necessary textures.. ' + Math.round(finishedTasks * 100 / toExtract.length) + '%\r');
                     if (finishedTasks === toExtract.length) {

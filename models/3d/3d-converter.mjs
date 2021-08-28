@@ -40,7 +40,7 @@ async function convertToColladaFiles(records, outPath) {
     return new Promise(resolve => {
         for (let modelPath of toExtract) {
             pool.exec('runColladaConverter', [modelPath])
-                .then(createdColladaFilePath => {
+                .always(createdColladaFilePath => {
                     finishedTasks += 1;
                     process.stdout.write('Converting to Collada files.. ' + Math.round(finishedTasks * 100 / toExtract.length) + '%\r');
                     colladaFilePaths.push(createdColladaFilePath);
@@ -66,7 +66,7 @@ async function fixColladaFiles(colladaFilePaths) {
         const lines = content.split('\n');
         const withoutNormals = lines.filter(line => !line.trim().startsWith('<input semantic="NORMAL"')).join('\n');
 
-        const fixed = withoutNormals.replace(/<init_from>.*\/(.*)\.(png|dds|tif)<\/init_from>/gm, '<init_from>textures/$1.png</init_from>');
+        const fixed = withoutNormals.replace(/<init_from>.*[\/\\](.*)\.(png|dds|tif)<\/init_from>/gm, '<init_from>textures/$1.png</init_from>');
 
         await fs.writeFile(colladaFilePath, fixed);
     }
@@ -81,7 +81,7 @@ export async function convertToGltfFiles(colladaFilePaths) {
     return new Promise(resolve => {
         for (let colladaFilePath of colladaFilePaths) {
             pool.exec('runGltfConverter', [colladaFilePath])
-                .then(() => {
+                .always(() => {
                     finishedTasks += 1;
                     process.stdout.write('Converting to Gltf files.. ' + Math.round(finishedTasks * 100 / colladaFilePaths.length) + '%\r');
                     if (finishedTasks === colladaFilePaths.length) {
