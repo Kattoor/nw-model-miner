@@ -66,7 +66,7 @@ async function fixColladaFiles(colladaFilePaths) {
         const lines = content.split('\n');
         const withoutNormals = lines.filter(line => !line.trim().startsWith('<input semantic="NORMAL"')).join('\n');
 
-        const fixed = withoutNormals.replace(/<init_from>.*[\/\\](.*)\.(png|dds|tif)<\/init_from>/gm, '<init_from>textures/$1.png</init_from>');
+        const fixed = withoutNormals.replace(/<init_from>.*?[\/\\]?(.*)\.(png|dds|tif)<\/init_from>/gm, '<init_from>textures/$1.png</init_from>');
 
         await fs.writeFile(colladaFilePath, fixed);
     }
