@@ -8,4 +8,4 @@
 6. Browse [The Useless Web](https://theuselessweb.com/) for about 20 minutes until the application finishes.
 7. Open nw-model-miner/viewer/index.html - drag a GLTF file onto the page to load it.
 
-![Model Viewer](https://i.imgur.com/9gmkzLZ.gif)
+https://user-images.githubusercontent.com/8040542/131267284-9e853211-6fcb-4e26-a70f-32786e39939b.mp4
