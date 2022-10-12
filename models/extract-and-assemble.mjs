@@ -17,8 +17,8 @@ export async function extractAndAssemble(path) {
             const itemIdIndex = 0;
             const nameIndex = 1;
             const itemTypeIndex = 2;
-            const armorAppearanceMIndex = 41;
-            const armorAppearanceFIndex = 42;
+            const armorAppearanceMIndex = 42;
+            const armorAppearanceFIndex = 43;
 
             for (let line of lines) {
                 const cells = line.split(';');
@@ -42,14 +42,14 @@ export async function extractAndAssemble(path) {
             const lines = data.split('\n');
 
             const itemIdIndex = 0;
-            const skin1Index = 27;
-            const material1Index = 28;
-            const isSkin1Index = 29;
-            const mask1Index = 30;
-            const skin2Index = 31;
-            const material2Index = 32;
-            const isSkin2Index = 33;
-            const mask2Index = 34;
+            const skin1Index = 28;
+            const material1Index = 29;
+            const isSkin1Index = 30;
+            const mask1Index = 31;
+            const skin2Index = 32;
+            const material2Index = 33;
+            const isSkin2Index = 34;
+            const mask2Index = 35;
 
             for (let line of lines) {
                 const cells = line.split(';');
